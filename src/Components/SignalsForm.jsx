@@ -6,7 +6,6 @@ const lastName=signal('');
 const fullName=signal('');
 const allowContact=signal(false);
 const contactMethod=signal('');
-const contactInfo=signal('');
 const selectValue=signal('');
 const showDetails=signal(false);
 
@@ -18,15 +17,12 @@ const displayName = (e) => {
     fullName.value = `${firstName.value} ${lastName.value}`.trim();
     firstName.value = '';
     lastName.value = '';
-    contactInfo.value = allowContact.value ? `Allowed Contact via ${contactMethod.value}` : 'Contact Not Allowed';
 }
 
 //component that renders the form
 function SignalsForm(){
 
-    const toggleContact=()=>{
-        allowContact.value= true;
-    }
+    const toggleContact=()=> allowContact.value = !allowContact.value;
 
     return(
         <form onSubmit={displayName}>
@@ -58,7 +54,7 @@ function SignalsForm(){
                     type="radio" 
                     value={"Phone"} 
                     name={"contact"} 
-                    onClick={e=>contactMethod.value = e.currentTarget.value } 
+                    onClick={e=> contactMethod.value = e.currentTarget.value } 
                     disabled={!allowContact.value}
                 />
             </label>
@@ -67,7 +63,7 @@ function SignalsForm(){
                     type="radio" 
                     value={"Mail"} 
                     name={"contact"} 
-                    onClick={e=>contactMethod.value = e.currentTarget.value } 
+                    onClick={e=> contactMethod.value = e.currentTarget.value } 
                     disabled={!allowContact.value}
                 /><br/>
             </label>
@@ -84,8 +80,11 @@ function SignalsForm(){
                     <>
                         <h2>Form-Details</h2>
                         <p>Full Name : {fullName.value}</p>
-                        <p>Contact Info : {contactInfo.value}</p>
                         <p>Location : {selectValue.value}</p>
+                        <p>
+				            You {allowContact.value ? 'have allowed' : 'have not allowed'} contact{' '}
+				            {allowContact.value && ` via ${contactMethod.value}`}
+			            </p>
                     </>
                 )}
         </form>
